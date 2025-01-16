@@ -17,6 +17,25 @@ function App() {
     2 là chiều chữ liệu
   */
   const [name, setName] = useState("");
+  const courses = [
+    {
+      id: 1,
+      name: "HTML,CSS"
+    },
+    {
+      id: 2,
+      name: "Javascript"
+    },
+    {
+      id: 3,
+      name: "ReactJs"
+    }
+  ]
+  const [checked, setChecked] = useState(2);
+  const handleSubmit = () => {
+    //Call API
+    console.log({ id: checked });
+  }
   return (
     <div className="App" style={{ padding: 32 }}>
       <h1>{gift || "Chưa có phần thưởng"}</h1>
@@ -28,6 +47,17 @@ function App() {
       />
       <button onClick={() => setName("Nguyen Van B")}>Change Name</button>
       {/* ở đây ấn button mặc dù name đã đổi thành Nguyễn Văn B nhưng trên giao diện chưa đổi  nếu không có value={name}*/}
+      {courses.map(course => (
+        <div key={course.id}>
+          <input
+            type='radio'
+            checked={checked === course.id}
+            onChange={() => setChecked(course.id)}
+          />
+          {course.name}
+        </div>
+      ))}
+      <button onClick={handleSubmit}>Register</button>
     </div>
   );
 }
