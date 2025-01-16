@@ -1,41 +1,33 @@
 import { useState } from 'react'
 
 function App() {
-  //useState
-  const orders = [100, 200, 300];
-  const [counter, setCounter] = useState(() => {
-    const total = orders.reduce((total, cur) => total + cur);
-    return total;
-  });
-  const handleIncrease = () => {
-    setCounter(prevState => prevState + 1);
-    setCounter(prevState => prevState + 1);
-    setCounter(prevState => prevState + 1);
+  const gifts = [
+    "CPU i9",
+    "RAM 32G RGB",
+    "RGB Keyboard"
+  ]
+  const [gift, setGift] = useState();
+  const handleGift = () => {
+    const index = Math.floor(Math.random() * gifts.length);
+    setGift(gifts[index]);
   }
-
-  const [info, setInfo] = useState({
-    name: "Nguyen Van A",
-    age: 18,
-    address: "Ha Noi"
-  });
-  const handleUpdate = () => {
-    // setInfo({
-    //   ...info,
-    //   bio: "yeu mau hong"
-    // });
-    setInfo(prev => ({
-      ...prev,
-      bio: "Yeu mau hong"
-    }));
-  }
+  /*
+    Two-way binding
+    1 chiều là chiều tương tác trên giao diện
+    2 là chiều chữ liệu
+  */
+  const [name, setName] = useState("");
   return (
-    <div className="App">
-      <h1>{counter}</h1>
-      <h1>
-        {JSON.stringify(info)}
-      </h1>
-      <button onClick={handleIncrease}>Increase</button>
-      <button onClick={handleUpdate}>Update</button>
+    <div className="App" style={{ padding: 32 }}>
+      <h1>{gift || "Chưa có phần thưởng"}</h1>
+      <button onClick={handleGift}>Lấy thưởng</button>
+      <br />
+      <input
+        value={name}
+        onChange={e => setName(e.target.value)}
+      />
+      <button onClick={() => setName("Nguyen Van B")}>Change Name</button>
+      {/* ở đây ấn button mặc dù name đã đổi thành Nguyễn Văn B nhưng trên giao diện chưa đổi  nếu không có value={name}*/}
     </div>
   );
 }
