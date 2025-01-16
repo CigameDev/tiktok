@@ -36,6 +36,23 @@ function App() {
     //Call API
     console.log({ id: checked });
   }
+
+  const [checkedbox, setChekedBox] = useState([]);
+  const handleSubmitCheckBox = () => {
+    //Call API 
+    //In ra mảng các phần tử được chọn
+    console.log(checkedbox);
+  }
+  const OnChangeCheckedBox = (id) => {
+    setChekedBox(prev => {
+      if (prev.includes(id)) {
+        return prev.filter(item => item !== id);
+      }
+      else {
+        return [...prev, id];
+      }
+    });
+  }
   return (
     <div className="App" style={{ padding: 32 }}>
       <h1>{gift || "Chưa có phần thưởng"}</h1>
@@ -57,7 +74,19 @@ function App() {
           {course.name}
         </div>
       ))}
-      <button onClick={handleSubmit}>Register</button>
+      <button onClick={handleSubmit}>Register radio</button>
+      <br />
+      {courses.map(course => (
+        <div key={course.id}>
+          <input
+            type='checkbox'
+            checked={checkedbox.includes(course.id)}
+            onChange={() => OnChangeCheckedBox(course.id)}
+          />
+          {course.name}
+        </div>
+      ))}
+      <button onClick={handleSubmitCheckBox}>Register CheckBox</button>
     </div>
   );
 }
