@@ -1,20 +1,16 @@
 import { useEffect, useState } from "react";
-
 function UseEffect2() {
-  const tabs = ['posts', 'comments', 'albums'];
-  const [title, setTitle] = useState('');
+  const tabs = ['posts', 'comments', 'albums'];//bài toán là có các nút bấm,bấm vào nút nào thì call API để show ra dữ liệu
   const [posts, setPosts] = useState([]);
   const [type, setType] = useState('posts');
 
-  console.log(type);
-
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/posts')
+    fetch(`https://jsonplaceholder.typicode.com/${type}`)
       .then(res => res.json())
-      .then(posts => {
-        //setPosts(posts);
+      .then(p => {
+        setPosts(p);
       })
-  }, []);//đây là trường hợp truyền thêm mảng ,nếu không có hoặc không sử dụng useEffect thì sẽ callAPI rất nhiều lần =>lag
+  }, [type]);
 
   return (
     <div>
@@ -29,16 +25,11 @@ function UseEffect2() {
         </button>
       ))}
 
-      <input
-        value={title}
-        onChange={e => setTitle(e.target.value)}
-      />
-      <ul>
+      <ol>
         {posts.map(post => (
-          <li key={post.id}>{post.title}</li>
+          <li key={post.id}>{post.title || post.name}</li>
         ))}
-      </ul>
-
+      </ol>
     </div>
   )
 

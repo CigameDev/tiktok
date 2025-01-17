@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import UseEffect2 from './UseEffect2';
 function App() {
-  const [show, setShow] = useState(false);
   const [showPosts, setShowPosts] = useState(false);
   return (
     <div className="App" style={{ padding: 32 }}>
