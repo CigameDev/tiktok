@@ -11,7 +11,7 @@ function UseEffect2() {
         console.log(posts);
         setPosts(posts);
       })
-  }, []);//đây là trường hợp truyền thêm mảng ,nếu không có hoặc không sử dụng useEffect thì sẽ callAPI rất nhiều lần =>lag
+  }, []);
 
   return (
     <div>
