@@ -1,31 +1,23 @@
-import { useRef, useState } from "react"
+import { memo } from "react"
 
 
-function Content() {
-  const [count, setCount] = useState(60);
-
-  const timerId = useRef();
-  const handleStart = () => {
-    timerId.current = setInterval(() => {
-      setCount(prev => prev - 1);
-    }, 1000);
-  }
-  const handleStop = () => {
-    clearInterval(timerId.current);
-  }
+function Content({ prop }) {
+  console.log('Re-render');
   return (
     <div>
-      <h1>{count}</h1>
-      <button onClick={handleStart}>Start</button>
-      <button onClick={handleStop}>Stop</button>
+      <h1>Hello Anh em {prop}</h1>
     </div>
   )
 }
-export default Content
-/*
-  Lưu các giá trị qua một tham chiếu bên ngoài
-  function component
+export default memo(Content)
 
-  nếu chỉ sử dụng let timerId thì không stop được ,việc sử dụng useRef tương tự với việc bê biến đó ra ngoài function (mới stop được)
-  useRef là 1 object ,muốn truy cập vào thì cần .current
+/* 
+  + import memo ,bao lấy component 
+  + Khi nào dùng :Component phức tạp nhận nhiều props =>nếu re-render  ảnh hưởng hiệu năng lại ko cần thiết thì nên dùng memo
+  + Content là component con của App,khi ta nhấn nút increase thì componnet App sẽ bị render lại 
+  + mặc dù content không liên quan nhưng App render lại nên Content cũng bị render lại
+  +Khi sử dụng memo cho Content thì Content sẽ không bị re-render nữa nếu không bị tác động gì khác
+  +Nguyên lý hoạt động : Nó nhận vào 1 component(Content) nó sẽ check các props của component này sau mỗi lần re-render có bị thay đổi hay không
+  +Ít nhất 1 prop bị thay đổi nó cho re-render (nếu không có prop thì thôi)
+  +Khi thêm props là props vào kia ,nếu count bị thay đổi mà component cha thay đổi => Content cũng bị rerender
 */
