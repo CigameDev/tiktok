@@ -1,23 +1,25 @@
 import { memo } from "react"
 
 
-function Content({ prop }) {
+function Content({ onIncrease }) {
   console.log('Re-render');
   return (
     <div>
-      <h1>Hello Anh em {prop}</h1>
+      <h1>Hello Anh em </h1>
+      <button onClick={onIncrease}>Click me!</button>
     </div>
   )
 }
 export default memo(Content)
 
 /* 
-  + import memo ,bao lấy component 
-  + Khi nào dùng :Component phức tạp nhận nhiều props =>nếu re-render  ảnh hưởng hiệu năng lại ko cần thiết thì nên dùng memo
-  + Content là component con của App,khi ta nhấn nút increase thì componnet App sẽ bị render lại 
-  + mặc dù content không liên quan nhưng App render lại nên Content cũng bị render lại
-  +Khi sử dụng memo cho Content thì Content sẽ không bị re-render nữa nếu không bị tác động gì khác
-  +Nguyên lý hoạt động : Nó nhận vào 1 component(Content) nó sẽ check các props của component này sau mỗi lần re-render có bị thay đổi hay không
-  +Ít nhất 1 prop bị thay đổi nó cho re-render (nếu không có prop thì thôi)
-  +Khi thêm props là props vào kia ,nếu count bị thay đổi mà component cha thay đổi => Content cũng bị rerender
+  +import useCallback
+  +sử dụng để tránh tạo ra hàm mới không cần thiết trong component dẫn tới component con bị rerender
+  +ở đây khi nhấn onClick thì gọi tới prop (onIncrease)=>gọi tới hàm handleIncrease ,
+    cứ nhấn onClick là tạo ra handleIncrease mới => prop thay đổi =>render lại Content => sử dụng useCallback
+  +const c = useCallback(callback,[deps])
+  +sử dụng useCallback nó sẽ lưu callback ra bên ngoài truyền vào biến c kia => ko là thay đổi props
+  +nếu [ ]nói khác là ko có deps thì luôn k tạo mới
+  +nếu [deps] nói cách khác là có deps thì nếu deps thay đổi nó sẽ tạo lại => props thay đổi
+  +Khi nào dùng ,khi thằng component con dùng memo thì tất cả các fuction liên quan tới thằng con trong thằng cha đều sử dụng useCallback
 */
