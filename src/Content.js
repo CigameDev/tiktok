@@ -1,29 +1,49 @@
 import { useEffect, useState } from "react"
 
 function Content() {
-  const [avatar, setAvatar] = useState();
-  useEffect(() => {
-    return () => {
-      avatar && URL.revokeObjectURL(avatar.preview);
+  const lessons = [
+    {
+      id: 1,
+      name: 'ReactJS là gì'
+    },
+    {
+      id: 2,
+      name: 'SPA/MPA là gì'
+    },
+    {
+      id: 3,
+      name: 'Arrow function'
     }
-  }, [avatar]);
+  ]
+  const [lessonId, setLessonId] = useState(1);
+  useEffect(() => {
+    const handleComment = (detail) => {
+      console.log(detail);
+    }
+    window.addEventListener(`lesson-${lessonId}`, handleComment);
 
-  const HandleAvatarPreview = (e) => {
-    const file = e.target.files[0];
-    file.preview = URL.createObjectURL(file);
-    setAvatar(file);
-    //file là object nên có thể tạo thêm thuộc tính preview
-    //gán file cho avatar => avatar.preview chính là src của tấm ảnh
-  }
+    return () => {
+      window.removeEventListener(`lesson-${lessonId}`, handleComment);
+    }
+  }, [lessonId])
   return (
     <div>
-      <input
-        type="file"
-        onChange={HandleAvatarPreview}
-      />
-      <br />
-
-      {avatar && <img src={avatar.preview} sizes="50%" />}
+      <ol>
+        {
+          lessons.map(lesson => (
+            <li
+              key={lesson.id}
+              style={{
+                color: lessonId === lesson.id ?
+                  'red' : '#333'
+              }}
+              onClick={() => setLessonId(lesson.id)}
+            >
+              {lesson.name}
+            </li>
+          ))
+        }
+      </ol>
     </div>
   )
 }
