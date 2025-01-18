@@ -1,37 +1,31 @@
-import { useLayoutEffect, useState } from "react"
+import { useRef, useState } from "react"
+
 
 function Content() {
-  const [count, setCount] = useState(0);
-  useLayoutEffect(() => {
-    if (count > 3) {
-      setCount(0);
-    }
-  }, [count]);
+  const [count, setCount] = useState(60);
 
-  const handleRun = () => {
-    setCount(count + 1);
+  const timerId = useRef();
+  const handleStart = () => {
+    timerId.current = setInterval(() => {
+      setCount(prev => prev - 1);
+    }, 1000);
+  }
+  const handleStop = () => {
+    clearInterval(timerId.current);
   }
   return (
     <div>
       <h1>{count}</h1>
-      <button onClick={handleRun}>Run</button>
+      <button onClick={handleStart}>Start</button>
+      <button onClick={handleStop}>Stop</button>
     </div>
   )
 }
 export default Content
 /*
-  useEffect
-    1.Cập nhật lại state
-    2.Cập nhất lại DOM
-    3.Render lại UI
-    4.Gọi cleanup nếu deps thay đổi
-    5.Gọi useEffect callback
-  useLayoutEffect
-    1.Cập nhật lại state
-    2.Cập nhất lại DOM
-    3.Gọi cleanup nếu deps thay đổi(sync)
-    4.Gọi useLayoutEffect callback(sync)
-    5.Render lại UI
+  Lưu các giá trị qua một tham chiếu bên ngoài
+  function component
 
-    khi có hiện tượng chớp nháy thì dùng useLayoutEffect (rất hiếm khi dùng).Còn lại cứ dùng useEffect
+  nếu chỉ sử dụng let timerId thì không stop được ,việc sử dụng useRef tương tự với việc bê biến đó ra ngoài function (mới stop được)
+  useRef là 1 object ,muốn truy cập vào thì cần .current
 */
